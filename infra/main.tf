@@ -3,7 +3,7 @@ resource "aws_instance" "ec2-instance" {
     instance_type = "t2.medium"
 
     vpc_security_group_ids = [
-        aws_security_group.allow-ssh.id,
+        aws_security_group.ssh.id,
         aws_security_group.jenkins.id,
     ]
 

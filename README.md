@@ -9,8 +9,9 @@ development
 - Brew https://brew.sh/
 - Terraform
   https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
+- Sign up with Docker Hub and input your credentials in JenkinsFile
 
-# First Time Setup
+# Setup CI
 
 1. Create a new IAM role within the AWS account you want to use and save the
    access id/key
@@ -26,3 +27,14 @@ development
 5. Navigate to http://<your_server_public_DNS>:8080 and follow these steps to
    configure Jenkins:
    https://www.jenkins.io/doc/tutorials/tutorial-for-installing-jenkins-on-AWS/#configuring-jenkins:~:text=systemctl%20status%20jenkins-,Configuring%20Jenkins,-Jenkins%20is%20now
+
+6. Create a pipeline called 'buildimage' and link this repository under SCM and
+   change /master to /main
+
+7. Create another pipeline called 'updatemanifest' a. Select 'This prompt is
+   parametised' b. Add the name 'DOCKERTAG' with default value `latest` c. Link
+   this repo under under SCM to the `/manifest` directory d. Change /master to
+   /main
+
+8. Return to the 'buildimage' pipeline and run it to test it creates an image
+   from the app and uploads it to Docker Hub automatically

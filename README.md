@@ -9,7 +9,10 @@ development
 - Brew https://brew.sh/
 - Terraform
   https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
-- Sign up with Docker Hub and input your credentials in JenkinsFile
+- Sign up with Docker Hub, then Find-and-Replace anywhere in this repo with
+  `<your-docker-id>`
+- Create a Github account and enter your credentials in `/manifest/JenkinsFile`,
+  replacing `<your-github-id>` and `<your-github-username>`
 
 # Setup CI
 

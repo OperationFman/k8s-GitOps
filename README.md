@@ -6,15 +6,26 @@ development
 
 # Prerequisites
 
+Install:
+
 - Brew https://brew.sh/
+- AWS Account https://aws.amazon.com/resources/create-account/
+- AWS CLI https://aws.amazon.com/cli/
+- Kubectl https://kubernetes.io/docs/tasks/tools/
 - Terraform
   https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
-- Sign up with Docker Hub, then Find-and-Replace anywhere in this repo with
-  `<your-docker-id>`
-- Create a Github account and enter your credentials in `/manifest/JenkinsFile`,
-  replacing `<your-github-id>` and `<your-github-username>`
+
+Configuration:
+
+- Sign up with Docker Hub https://hub.docker.com/signup then Find-and-Replace
+  anywhere in this repo with `<your-docker-id>`
+- Create a Github account https://github.com/signup then enter your credentials
+  in `/manifest/JenkinsFile`, replacing `<your-github-id>` and
+  `<your-github-username>`
 
 # Setup CI
+
+Note: You should only need to set this up once
 
 1. Create a new IAM role within the AWS account you want to use and save the
    access id/key
@@ -41,3 +52,29 @@ development
 
 8. Return to the 'buildimage' pipeline and run it to test it creates an image
    from the app and uploads it to Docker Hub automatically
+
+# Setup CD
+
+1. Run `aws create cluster`, Note: this costs a fortune if left running
+
+2. Install ArgoCD by following the official docs:
+   https://argo-cd.readthedocs.io/en/stable/getting_started/
+
+3. Log in to the ArgoCD UI
+
+4. Create app and under source paste this repo link with the path `/manifest`.
+   For destination, select the cluster and write 'default' under namespace,
+   unless you're using another namespace
+
+5. Once the app is running you can type `kubectl get svc` and copy the External
+   IP beside the Load Balancer to see the deployed site in your browser. Note:
+   It can take a few minutes
+
+6. Don't forget to checkout the app flow in ArgoCD to see how the deployment is
+   looking. Test the visuals are working by deleting a pod in kubectl and watch
+   ArgoCD spin up a new one
+
+7. Add a webhook so that whenever your/this repo is updated then a new image
+   will be created through the CI pipeline which will then trigger ArgoCD to
+   deploy the new app automatically:
+   https://www.blazemeter.com/blog/how-to-integrate-your-github-repository-to-your-jenkins-project
